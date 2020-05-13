@@ -13,12 +13,17 @@ AWESOMENESS = [
     'oh-so-not-meh', 'brilliant', 'ducky', 'coolio', 'incredible',
     'wonderful', 'smashing', 'lovely']
 
+DISS = ["dumb", "stupid", "silly", "crazy"]
+
 
 @app.route('/')
 def start_here():
     """Home page."""
 
-    return "<!doctype html><html>Hi! This is the home page.</html>"
+    return """<!doctype html>
+    <html>
+    <a href="/hello">Hi!</a> This is the home page.
+    </html>"""
 
 
 @app.route('/hello')
@@ -33,8 +38,25 @@ def say_hello():
       </head>
       <body>
         <h1>Hi There!</h1>
-        <form action="/greet">
+        <form action="/diss">
           What's your name? <input type="text" name="person">
+          <div>Choose your compliment:
+          <select name="compliment">
+            <option value="awesome">awesome</option>
+            <option value="terrific">terrific</option>
+            <option value="fantastic">fantastic</option>
+            <option value="neato">neato</option>
+            <option value="fantabulous">fantabulous</option>
+            <option value="wowza">wowza</option>
+            <option value="oh-so-not-meh">oh-so-not-meh</option>
+            <option value="brilliant">brilliant</option>
+            <option value="ducky">ducky</option>
+            <option value="coolio">coolio</option>
+            <option value="incredible">incredible</option>
+            <option value="wonderful">wonderful</option>
+            <option value="smashing">smashing</option>
+            <option value="lovely">lovely</option>
+          </div>
           <input type="submit" value="Submit">
         </form>
       </body>
@@ -48,7 +70,7 @@ def greet_person():
 
     player = request.args.get("person")
 
-    compliment = choice(AWESOMENESS)
+    compliment = request.args.get("compliment")
 
     return """
     <!doctype html>
@@ -61,6 +83,24 @@ def greet_person():
       </body>
     </html>
     """.format(player, compliment)
+
+@app.route("/diss")
+def diss_person():
+  """Display a diss to the user"""
+  player = request.args.get("person")
+
+  diss = choice(DISS)
+
+  return f"""<!doctype html>
+  <html>
+    <head>
+      <title>A Diss</title>
+    </head>
+    <body>
+      Wow {player}, you really thought I was going to compliment you?
+      You must be {diss}.
+    </body>
+  </html>"""
 
 
 if __name__ == '__main__':
